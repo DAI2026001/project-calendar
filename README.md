@@ -12,8 +12,21 @@
 ## 本地更新数据
 
 ```bash
-python3 build_schedule.py /Users/sdai/Downloads/投标日程表.xlsx ./schedule-data.js
+python3 build_schedule.py /Users/sdai/Downloads/辉阳集团项目.xlsx ./schedule-data.js
 ```
+
+也可以直接使用固定文件名的一键更新脚本：
+
+```bash
+zsh /Users/sdai/document/代码/condex/update_schedule.sh
+```
+
+使用方式：
+
+1. 在腾讯文档中导出最新 Excel
+2. 保存并覆盖 `/Users/sdai/Downloads/辉阳集团项目.xlsx`
+3. 执行上面的脚本
+4. 如需同步到线上，再执行 `git add / git commit / git push`
 
 ## 部署到 Vercel
 
