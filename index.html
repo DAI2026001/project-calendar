@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover"
+      />
+      <meta
+        name="description"
+        content="投标日程日历 H5，按月查看各项目开标时间、控制价、资质要求和 K 值范围。"
+      />
+      <meta name="format-detection" content="telephone=no" />
+      <meta property="og:type" content="website" />
+      <meta property="og:title" content="投标日程日历" />
+      <meta
+        property="og:description"
+        content="按月查看各项目开标时间、控制价、资质要求和 K 值范围。"
+      />
+      <meta property="og:image" content="/share-cover.svg" />
+      <meta property="og:locale" content="zh_CN" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content="投标日程日历" />
+      <meta
+        name="twitter:description"
+        content="按月查看各项目开标时间、控制价、资质要求和 K 值范围。"
+      />
+      <meta name="twitter:image" content="/share-cover.svg" />
+      <title>投标日程日历</title>
+    <style>
+      :root {
+        --bg: #f6f2e9;
+        --panel: rgba(255, 251, 245, 0.88);
+        --panel-strong: #fffdf8;
+        --ink: #1d2430;
+        --muted: #647083;
+        --line: rgba(25, 38, 56, 0.1);
+        --brand: #b6452c;
+        --brand-soft: rgba(182, 69, 44, 0.12);
+        --accent: #1f6b5c;
+        --shadow: 0 20px 45px rgba(74, 56, 29, 0.12);
+        --radius: 24px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+          sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(182, 69, 44, 0.15), transparent 28%),
+          radial-gradient(circle at top right, rgba(31, 107, 92, 0.18), transparent 24%),
+          linear-gradient(180deg, #fbf8f1 0%, var(--bg) 100%);
+        color: var(--ink);
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(29, 36, 48, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(29, 36, 48, 0.03) 1px, transparent 1px);
+        background-size: 18px 18px;
+        mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent 80%);
+      }
+
+      .app {
+        width: min(1180px, calc(100% - 28px));
+        margin: 0 auto;
+        padding: 20px 0 44px;
+      }
+
+      .hero,
+      .calendar-shell,
+      .agenda-shell {
+        background: var(--panel);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.65);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .hero {
+        padding: 22px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        right: -24px;
+        top: -24px;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(182, 69, 44, 0.24), transparent 68%);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.55);
+        color: var(--brand);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      h1 {
+        margin: 14px 0 8px;
+        font-size: clamp(28px, 5vw, 42px);
+        line-height: 1.1;
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 760px;
+        line-height: 1.7;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      .stat {
+        padding: 16px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.64);
+        border: 1px solid rgba(25, 38, 56, 0.08);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 24px;
+        margin-bottom: 6px;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 18px 0 16px;
+      }
+
+      .search {
+        flex: 1 1 280px;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 16px;
+        border-radius: 16px;
+        background: var(--panel-strong);
+        border: 1px solid var(--line);
+      }
+
+      .search input {
+        width: 100%;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        padding: 14px 0;
+        font-size: 15px;
+        color: var(--ink);
+      }
+
+      .month-chips {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 2px;
+      }
+
+      .month-chips button,
+      .nav button,
+      .calendar-day button {
+        appearance: none;
+        border: 0;
+        cursor: pointer;
+      }
+
+      .month-chips button {
+        white-space: nowrap;
+        padding: 12px 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--muted);
+        font-weight: 700;
+        border: 1px solid transparent;
+      }
+
+      .month-chips button.active {
+        background: var(--brand);
+        color: #fff;
+        box-shadow: 0 12px 24px rgba(182, 69, 44, 0.22);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr);
+        gap: 18px;
+      }
+
+      .calendar-shell,
+      .agenda-shell {
+        padding: 18px;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .nav strong {
+        font-size: 22px;
+      }
+
+      .nav span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .nav-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .nav button {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--panel-strong);
+        border: 1px solid var(--line);
+        font-size: 20px;
+        color: var(--ink);
+      }
+
+      .weekdays,
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+      }
+
+      .weekdays {
+        margin-bottom: 8px;
+      }
+
+      .weekdays span {
+        padding: 10px 6px;
+        text-align: center;
+        font-size: 12px;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+      }
+
+      .calendar-grid {
+        gap: 8px;
+      }
+
+      .calendar-day {
+        min-height: 96px;
+      }
+
+      .calendar-day button,
+      .calendar-day.empty {
+        width: 100%;
+        height: 100%;
+        min-height: 96px;
+        border-radius: 20px;
+        background: var(--panel-strong);
+        border: 1px solid rgba(25, 38, 56, 0.06);
+        padding: 12px 10px;
+        text-align: left;
+      }
+
+      .calendar-day.empty {
+        opacity: 0.25;
+      }
+
+      .calendar-day button.has-items {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 243, 239, 0.95));
+      }
+
+      .calendar-day button.selected {
+        border-color: rgba(182, 69, 44, 0.45);
+        box-shadow: 0 12px 28px rgba(182, 69, 44, 0.18);
+      }
+
+      .day-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .day-top strong {
+        font-size: 16px;
+      }
+
+      .count-pill {
+        min-width: 28px;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: var(--brand-soft);
+        color: var(--brand);
+        text-align: center;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .day-snippet {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+      }
+
+      .agenda-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+
+      .agenda-head h2 {
+        margin: 0 0 4px;
+        font-size: 24px;
+      }
+
+      .agenda-head p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .agenda-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .card {
+        background: var(--panel-strong);
+        border: 1px solid rgba(25, 38, 56, 0.08);
+        border-radius: 20px;
+        padding: 16px;
+      }
+
+      .card-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .time-badge {
+        flex: none;
+        padding: 7px 10px;
+        border-radius: 12px;
+        background: rgba(31, 107, 92, 0.12);
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .region-tag {
+        display: inline-flex;
+        margin-bottom: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(31, 107, 92, 0.1);
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .card h3 {
+        margin: 0;
+        font-size: 18px;
+        line-height: 1.45;
+      }
+
+      .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin: 12px 0;
+      }
+
+      .meta {
+        padding: 12px;
+        border-radius: 16px;
+        background: rgba(246, 242, 233, 0.8);
+      }
+
+      .meta label {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+
+      .meta strong {
+        font-size: 15px;
+        line-height: 1.5;
+        word-break: break-word;
+      }
+
+      details {
+        margin-top: 8px;
+      }
+
+      details summary {
+        cursor: pointer;
+        color: var(--brand);
+        font-weight: 700;
+      }
+
+      .detail-body {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .detail-item {
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255, 248, 244, 0.9);
+        border: 1px solid rgba(182, 69, 44, 0.08);
+      }
+
+      .detail-item label {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .detail-item div {
+        line-height: 1.65;
+        word-break: break-word;
+      }
+
+      .empty-state {
+        padding: 28px 16px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      @media (max-width: 900px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .stats {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 600px) {
+        .app {
+          width: min(100% - 20px, 100%);
+          padding-top: 12px;
+        }
+
+        .hero,
+        .calendar-shell,
+        .agenda-shell {
+          border-radius: 22px;
+        }
+
+        .stats,
+        .meta-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .calendar-grid {
+          gap: 6px;
+        }
+
+        .calendar-day,
+        .calendar-day button,
+        .calendar-day.empty {
+          min-height: 82px;
+        }
+
+        .card-head {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <section class="hero">
+        <div class="eyebrow">投标日程 H5</div>
+        <h1>开标时间一页看清</h1>
+        <p>
+          按月查看各项目开标安排，点选某一天即可查看项目名称、控制价、资质要求和
+          K 值范围，也保留了评标办法、保证金和人员要求等关键字段。
+        </p>
+        <div class="stats" id="stats"></div>
+      </section>
+
+      <div class="toolbar">
+        <label class="search">
+          <span>检索</span>
+          <input
+            id="searchInput"
+            type="search"
+            placeholder="搜索项目名称、地区、资质要求"
+          />
+        </label>
+        <div class="month-chips" id="monthChips"></div>
+      </div>
+
+      <section class="layout">
+        <div class="calendar-shell">
+          <div class="nav">
+            <div>
+              <strong id="calendarTitle"></strong>
+              <span id="calendarSubtitle"></span>
+            </div>
+            <div class="nav-actions" id="calendarActions"></div>
+          </div>
+          <div class="weekdays">
+            <span>周一</span>
+            <span>周二</span>
+            <span>周三</span>
+            <span>周四</span>
+            <span>周五</span>
+            <span>周六</span>
+            <span>周日</span>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+
+        <aside class="agenda-shell">
+          <div class="agenda-head">
+            <div>
+              <h2 id="agendaTitle"></h2>
+              <p id="agendaSubtitle"></p>
+            </div>
+          </div>
+          <div class="agenda-list" id="agendaList"></div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="./schedule-data.js"></script>
+    <script>
+      const projects = Array.isArray(window.SCHEDULE_DATA) ? window.SCHEDULE_DATA : [];
+      const searchInput = document.getElementById("searchInput");
+      const statsEl = document.getElementById("stats");
+      const monthChipsEl = document.getElementById("monthChips");
+      const calendarTitleEl = document.getElementById("calendarTitle");
+      const calendarSubtitleEl = document.getElementById("calendarSubtitle");
+      const calendarActionsEl = document.getElementById("calendarActions");
+      const calendarGridEl = document.getElementById("calendarGrid");
+      const agendaTitleEl = document.getElementById("agendaTitle");
+      const agendaSubtitleEl = document.getElementById("agendaSubtitle");
+      const agendaListEl = document.getElementById("agendaList");
+
+      const datedProjects = projects.filter((item) => item.dayKey !== "待定");
+      const monthKeys = [...new Set(datedProjects.map((item) => item.dayKey.slice(0, 7)))];
+      const hasPending = projects.some((item) => item.dayKey === "待定");
+      if (hasPending) monthKeys.push("待定");
+
+      const todayMonth = new Date().toISOString().slice(0, 7);
+      const initialMonth = monthKeys.includes(todayMonth) ? todayMonth : monthKeys[0];
+
+      const state = {
+        search: "",
+        month: initialMonth,
+        selectedDay: initialMonth === "待定" ? "待定" : null,
+      };
+
+      function formatMoney(value) {
+        if (!value || value === "/") return "未填写";
+        return Number(value).toLocaleString("zh-CN");
+      }
+
+      function formatAmount(project) {
+        if (!project.amount) return "未填写";
+        if (project.amountWan) {
+          return `${Number(project.amount).toLocaleString("zh-CN")} 元 / ${project.amountWan} 万`;
+        }
+        return `${formatMoney(project.amount)} 元`;
+      }
+
+      function getMonthProjects(monthKey) {
+        if (monthKey === "待定") {
+          return projects.filter((item) => item.dayKey === "待定");
+        }
+        return datedProjects.filter((item) => item.dayKey.startsWith(monthKey));
+      }
+
+      function getFilteredProjects() {
+        const keyword = state.search.trim().toLowerCase();
+        const source = getMonthProjects(state.month);
+        if (!keyword) return source;
+        return source.filter((item) =>
+          [item.name, item.region, item.qualification, item.kValue, item.staff]
+            .join(" ")
+            .toLowerCase()
+            .includes(keyword)
+        );
+      }
+
+      function renderStats() {
+        const projectCount = projects.length;
+        const regions = new Set(projects.map((item) => item.region).filter(Boolean)).size;
+        const pendingCount = projects.filter((item) => item.dayKey === "待定").length;
+        const amountTotal = projects.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+
+        const stats = [
+          { value: projectCount, label: "项目总数" },
+          { value: monthKeys.length - (hasPending ? 1 : 0), label: "覆盖月份" },
+          { value: regions, label: "覆盖地区" },
+          { value: `${(amountTotal / 100000000).toFixed(2)} 亿`, label: `控制价汇总，待定 ${pendingCount} 项` },
+        ];
+
+        statsEl.innerHTML = stats
+          .map(
+            (item) => `
+              <div class="stat">
+                <strong>${item.value}</strong>
+                <span>${item.label}</span>
+              </div>
+            `
+          )
+          .join("");
+      }
+
+      function renderMonthChips() {
+        monthChipsEl.innerHTML = monthKeys
+          .map((monthKey) => {
+            const count = getMonthProjects(monthKey).length;
+            const label = monthKey === "待定" ? `待定项目 ${count}` : `${monthKey} · ${count}`;
+            return `<button class="${state.month === monthKey ? "active" : ""}" data-month="${monthKey}">${label}</button>`;
+          })
+          .join("");
+
+        [...monthChipsEl.querySelectorAll("button")].forEach((button) => {
+          button.addEventListener("click", () => {
+            state.month = button.dataset.month;
+            state.selectedDay = state.month === "待定" ? "待定" : null;
+            render();
+          });
+        });
+      }
+
+      function renderCalendarNav() {
+        if (state.month === "待定") {
+          calendarTitleEl.textContent = "待定项目";
+          calendarSubtitleEl.textContent = "这些项目没有明确开标日期，已按原表内容保留。";
+          calendarActionsEl.innerHTML = "";
+          return;
+        }
+
+        const index = monthKeys.indexOf(state.month);
+        const prev = monthKeys[index - 1];
+        const next = monthKeys[index + 1] === "待定" ? null : monthKeys[index + 1];
+
+        calendarTitleEl.textContent = state.month;
+        calendarSubtitleEl.textContent = `共 ${getFilteredProjects().length} 个匹配项目`;
+        calendarActionsEl.innerHTML = `
+          <button ${prev ? `data-nav="${prev}"` : "disabled"} aria-label="上个月">‹</button>
+          <button ${next ? `data-nav="${next}"` : "disabled"} aria-label="下个月">›</button>
+        `;
+
+        [...calendarActionsEl.querySelectorAll("button[data-nav]")].forEach((button) => {
+          button.addEventListener("click", () => {
+            state.month = button.dataset.nav;
+            state.selectedDay = null;
+            render();
+          });
+        });
+      }
+
+      function renderCalendar() {
+        renderCalendarNav();
+
+        if (state.month === "待定") {
+          calendarGridEl.innerHTML = '<div class="empty-state">待定项目不进入月历网格，请在右侧列表查看。</div>';
+          return;
+        }
+
+        const filteredProjects = getFilteredProjects();
+        const projectMap = new Map();
+        filteredProjects.forEach((item) => {
+          const list = projectMap.get(item.dayKey) || [];
+          list.push(item);
+          projectMap.set(item.dayKey, list);
+        });
+
+        const [year, month] = state.month.split("-").map(Number);
+        const firstDay = new Date(year, month - 1, 1);
+        const daysInMonth = new Date(year, month, 0).getDate();
+        const offset = (firstDay.getDay() + 6) % 7;
+
+        const cells = [];
+        for (let i = 0; i < offset; i += 1) {
+          cells.push('<div class="calendar-day empty"></div>');
+        }
+
+        for (let day = 1; day <= daysInMonth; day += 1) {
+          const dayKey = `${state.month}-${String(day).padStart(2, "0")}`;
+          const list = projectMap.get(dayKey) || [];
+          const selected = state.selectedDay
+            ? state.selectedDay === dayKey
+            : list.length > 0 && day === 1 && false;
+          const summary = list[0] ? `${list[0].timeLabel} ${list[0].region}` : "暂无项目";
+          cells.push(`
+            <div class="calendar-day">
+              <button
+                class="${list.length ? "has-items" : ""} ${selected ? "selected" : ""}"
+                data-day="${dayKey}"
+              >
+                <div class="day-top">
+                  <strong>${day}</strong>
+                  ${list.length ? `<span class="count-pill">${list.length}</span>` : ""}
+                </div>
+                <div class="day-snippet">${summary}</div>
+              </button>
+            </div>
+          `);
+        }
+
+        calendarGridEl.innerHTML = cells.join("");
+        [...calendarGridEl.querySelectorAll("button[data-day]")].forEach((button) => {
+          button.addEventListener("click", () => {
+            state.selectedDay = button.dataset.day;
+            renderAgenda();
+            renderCalendar();
+          });
+        });
+      }
+
+      function createCard(project) {
+        return `
+          <article class="card">
+            <div class="card-head">
+              <div>
+                <span class="region-tag">${project.region || "未分地区"}</span>
+                <h3>${project.name}</h3>
+              </div>
+              <span class="time-badge">${project.dateLabel}</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta">
+                <label>控制价</label>
+                <strong>${formatAmount(project)}</strong>
+              </div>
+              <div class="meta">
+                <label>K 值范围</label>
+                <strong>${project.kValue || "未填写"}</strong>
+              </div>
+              <div class="meta">
+                <label>资质要求</label>
+                <strong>${project.qualification || "未填写"}</strong>
+              </div>
+              <div class="meta">
+                <label>人员要求</label>
+                <strong>${project.staff || "未填写"}</strong>
+              </div>
+            </div>
+            <details>
+              <summary>展开更多项目信息</summary>
+              <div class="detail-body">
+                <div class="detail-item">
+                  <label>评标办法</label>
+                  <div>${project.evaluation || "未填写"}</div>
+                </div>
+                <div class="detail-item">
+                  <label>投标保证金</label>
+                  <div>${project.deposit && project.deposit !== "/" ? `${formatMoney(project.deposit)} 元` : "未填写"}</div>
+                </div>
+                <div class="detail-item">
+                  <label>清单数 / 危大 / 有限空间</label>
+                  <div>清单数：${project.billCount || "未填写"}，危大：${project.danger || "未填写"}，有限空间：${project.confinedSpace || "未填写"}</div>
+                </div>
+                <div class="detail-item">
+                  <label>报名状态</label>
+                  <div>${project.signup || "未填写"}</div>
+                </div>
+              </div>
+            </details>
+          </article>
+        `;
+      }
+
+      function renderAgenda() {
+        const filteredProjects = getFilteredProjects();
+        let list = filteredProjects;
+        let title = state.month === "待定" ? "待定项目" : `${state.month} 全部项目`;
+        let subtitle = `共 ${filteredProjects.length} 个匹配项目`;
+
+        if (state.month !== "待定" && state.selectedDay) {
+          list = filteredProjects.filter((item) => item.dayKey === state.selectedDay);
+          title = state.selectedDay;
+          subtitle = list.length
+            ? `当天共有 ${list.length} 个项目开标`
+            : "这一天没有匹配当前搜索条件的项目";
+        }
+
+        agendaTitleEl.textContent = title;
+        agendaSubtitleEl.textContent = subtitle;
+        agendaListEl.innerHTML = list.length
+          ? list.map(createCard).join("")
+          : '<div class="empty-state">没有找到匹配的项目，试试切换月份或修改搜索关键词。</div>';
+      }
+
+      function render() {
+        renderMonthChips();
+        renderCalendar();
+        renderAgenda();
+      }
+
+      searchInput.addEventListener("input", (event) => {
+        state.search = event.target.value;
+        render();
+      });
+
+      renderStats();
+      render();
+    </script>
+  </body>
+</html>
