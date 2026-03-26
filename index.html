@@ -72,10 +72,9 @@
       .app {
         width: min(1180px, calc(100% - 28px));
         margin: 0 auto;
-        padding: 20px 0 44px;
+        padding: 12px 0 28px;
       }
 
-      .hero,
       .calendar-shell,
       .agenda-shell {
         background: var(--panel);
@@ -85,78 +84,11 @@
         box-shadow: var(--shadow);
       }
 
-      .hero {
-        padding: 22px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .hero::after {
-        content: "";
-        position: absolute;
-        right: -24px;
-        top: -24px;
-        width: 160px;
-        height: 160px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(182, 69, 44, 0.24), transparent 68%);
-      }
-
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.55);
-        color: var(--brand);
-        font-size: 13px;
-        font-weight: 700;
-      }
-
-      h1 {
-        margin: 14px 0 8px;
-        font-size: clamp(28px, 5vw, 42px);
-        line-height: 1.1;
-      }
-
-      .hero p {
-        margin: 0;
-        color: var(--muted);
-        max-width: 760px;
-        line-height: 1.7;
-      }
-
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 12px;
-        margin-top: 20px;
-      }
-
-      .stat {
-        padding: 16px;
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.64);
-        border: 1px solid rgba(25, 38, 56, 0.08);
-      }
-
-      .stat strong {
-        display: block;
-        font-size: 24px;
-        margin-bottom: 6px;
-      }
-
-      .stat span {
-        color: var(--muted);
-        font-size: 13px;
-      }
-
       .toolbar {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
-        margin: 18px 0 16px;
+        gap: 8px;
+        margin: 0 0 10px;
       }
 
       .search {
@@ -165,10 +97,11 @@
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 0 16px;
-        border-radius: 16px;
+        padding: 0 14px;
+        border-radius: 14px;
         background: var(--panel-strong);
         border: 1px solid var(--line);
+        box-shadow: 0 10px 24px rgba(74, 56, 29, 0.05);
       }
 
       .search input {
@@ -176,14 +109,14 @@
         border: 0;
         outline: 0;
         background: transparent;
-        padding: 14px 0;
+        padding: 12px 0;
         font-size: 15px;
         color: var(--ink);
       }
 
       .month-chips {
         display: flex;
-        gap: 10px;
+        gap: 8px;
         overflow-x: auto;
         padding-bottom: 2px;
       }
@@ -198,12 +131,13 @@
 
       .month-chips button {
         white-space: nowrap;
-        padding: 12px 16px;
+        padding: 10px 14px;
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.72);
         color: var(--muted);
         font-weight: 700;
-        border: 1px solid transparent;
+        font-size: 13px;
+        border: 1px solid rgba(25, 38, 56, 0.06);
       }
 
       .month-chips button.active {
@@ -215,13 +149,13 @@
       .layout {
         display: grid;
         grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr);
-        gap: 18px;
+        gap: 14px;
       }
 
       .view-switch {
         display: none;
         gap: 8px;
-        margin-bottom: 14px;
+        margin-bottom: 10px;
       }
 
       .view-switch button {
@@ -231,8 +165,8 @@
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.72);
         color: var(--muted);
-        padding: 12px 14px;
-        font-size: 14px;
+        padding: 10px 14px;
+        font-size: 13px;
         font-weight: 700;
       }
 
@@ -244,7 +178,7 @@
 
       .calendar-shell,
       .agenda-shell {
-        padding: 18px;
+        padding: 16px;
       }
 
       .nav {
@@ -252,7 +186,7 @@
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        margin-bottom: 14px;
+        margin-bottom: 10px;
       }
 
       .nav strong {
@@ -270,12 +204,14 @@
       }
 
       .nav button {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
+        min-width: 76px;
+        height: 38px;
+        padding: 0 14px;
+        border-radius: 999px;
         background: var(--panel-strong);
         border: 1px solid var(--line);
-        font-size: 20px;
+        font-size: 13px;
+        font-weight: 700;
         color: var(--ink);
       }
 
@@ -286,39 +222,44 @@
       }
 
       .weekdays {
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }
 
       .weekdays span {
         padding: 10px 6px;
         text-align: center;
-        font-size: 12px;
+        font-size: 11px;
         color: var(--muted);
         letter-spacing: 0.08em;
       }
 
       .calendar-grid {
-        gap: 8px;
+        gap: 6px;
       }
 
       .calendar-day {
-        min-height: 96px;
+        min-height: 88px;
       }
 
       .calendar-day button,
       .calendar-day.empty {
         width: 100%;
         height: 100%;
-        min-height: 96px;
-        border-radius: 20px;
+        min-height: 88px;
+        border-radius: 18px;
         background: var(--panel-strong);
         border: 1px solid rgba(25, 38, 56, 0.06);
-        padding: 12px 10px;
+        padding: 10px 10px;
         text-align: left;
       }
 
       .calendar-day.empty {
         opacity: 0.25;
+      }
+
+      .calendar-day button.is-outside {
+        opacity: 0.46;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(244, 240, 233, 0.78));
       }
 
       .calendar-day button.has-items {
@@ -327,7 +268,7 @@
 
       .calendar-day button.selected {
         border-color: rgba(182, 69, 44, 0.45);
-        box-shadow: 0 12px 28px rgba(182, 69, 44, 0.18);
+        box-shadow: 0 10px 22px rgba(182, 69, 44, 0.16);
       }
 
       .day-top {
@@ -338,7 +279,7 @@
       }
 
       .day-top strong {
-        font-size: 16px;
+        font-size: 15px;
       }
 
       .count-pill {
@@ -352,15 +293,61 @@
         font-weight: 700;
       }
 
+      .day-badges {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .day-flag {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 7px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        line-height: 1.2;
+      }
+
+      .day-flag.holiday {
+        background: linear-gradient(180deg, rgba(159, 47, 53, 0.12), rgba(159, 47, 53, 0.06));
+        color: #9f2f35;
+        border: 1px solid rgba(159, 47, 53, 0.12);
+      }
+
+      .calendar-day button.is-weekend strong {
+        color: #7d6a52;
+      }
+
+      .calendar-day button.is-holiday strong {
+        color: #9f2f35;
+      }
+
       .day-snippet {
-        margin-top: 12px;
+        margin-top: 8px;
         color: var(--muted);
-        font-size: 12px;
-        line-height: 1.55;
+        font-size: 11px;
+        line-height: 1.5;
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         overflow: hidden;
+      }
+
+      .day-markers {
+        display: flex;
+        gap: 6px;
+        margin-top: 6px;
+        flex-wrap: wrap;
+      }
+
+      .day-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
       }
 
       .agenda-head {
@@ -384,14 +371,14 @@
 
       .agenda-list {
         display: grid;
-        gap: 12px;
+        gap: 10px;
       }
 
       .card {
         background: var(--panel-strong);
         border: 1px solid rgba(25, 38, 56, 0.08);
-        border-radius: 20px;
-        padding: 18px;
+        border-radius: 18px;
+        padding: 15px;
       }
 
       .card-head {
@@ -399,129 +386,103 @@
         align-items: flex-start;
         justify-content: space-between;
         gap: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
+      }
+
+      .card-main {
+        flex: 1;
+        min-width: 0;
       }
 
       .time-badge {
         flex: none;
-        padding: 7px 10px;
+        padding: 6px 10px;
         border-radius: 12px;
         background: rgba(31, 107, 92, 0.12);
         color: var(--accent);
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 800;
+        margin-left: 12px;
       }
 
       .region-tag {
         display: inline-flex;
-        margin-bottom: 8px;
-        padding: 6px 10px;
+        margin-bottom: 6px;
+        padding: 5px 9px;
         border-radius: 999px;
         background: rgba(31, 107, 92, 0.1);
         color: var(--accent);
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
+      }
+
+      .sheet-tag {
+        display: inline-flex;
+        margin-left: 8px;
+        padding: 5px 9px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .sheet-tag.sheet-both,
+      .day-dot.sheet-both {
+        background: #1f8a5b;
+        color: #fff;
+      }
+
+      .sheet-tag.sheet-water,
+      .day-dot.sheet-water {
+        background: #1d7ca4;
+        color: #fff;
+      }
+
+      .sheet-tag.sheet-fuzhu,
+      .day-dot.sheet-fuzhu {
+        background: #8b5cf6;
+        color: #fff;
+      }
+
+      .sheet-tag.sheet-huiyang,
+      .day-dot.sheet-huiyang {
+        background: #9f2f35;
+        color: #fff;
       }
 
       .card h3 {
         margin: 0;
-        font-size: 19px;
-        line-height: 1.55;
+        font-size: 17px;
+        line-height: 1.48;
         letter-spacing: 0.01em;
+        word-break: break-word;
       }
 
       .core-brief {
-        margin-top: 12px;
-        padding: 14px 16px;
-        border-radius: 18px;
+        margin-top: 10px;
+        padding: 11px 13px;
+        border-radius: 16px;
         background: linear-gradient(180deg, rgba(250, 242, 236, 0.92), rgba(255, 252, 248, 0.96));
         border: 1px solid rgba(182, 69, 44, 0.1);
         color: #694a38;
-        line-height: 1.8;
-        font-size: 14px;
-      }
-
-      .meta-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-        margin: 12px 0;
-      }
-
-      .meta {
-        padding: 12px;
-        border-radius: 16px;
-        background: rgba(246, 242, 233, 0.8);
-      }
-
-      .meta label {
-        display: block;
-        color: var(--muted);
-        font-size: 12px;
-        margin-bottom: 6px;
-      }
-
-      .meta strong {
-        font-size: 15px;
-        line-height: 1.5;
-        word-break: break-word;
-      }
-
-      .meta.highlight {
-        background: rgba(182, 69, 44, 0.08);
-        border: 1px solid rgba(182, 69, 44, 0.1);
-      }
-
-      details {
-        margin-top: 8px;
-      }
-
-      details summary {
-        cursor: pointer;
-        color: var(--brand);
-        font-weight: 700;
-      }
-
-      .detail-body {
-        display: grid;
-        gap: 10px;
-        margin-top: 10px;
-      }
-
-      .detail-item {
-        padding: 12px 14px;
-        border-radius: 14px;
-        background: rgba(255, 248, 244, 0.9);
-        border: 1px solid rgba(182, 69, 44, 0.08);
-      }
-
-      .detail-item label {
-        display: block;
-        font-size: 12px;
-        color: var(--muted);
-        margin-bottom: 6px;
-      }
-
-      .detail-item div {
-        line-height: 1.65;
-        word-break: break-word;
+        line-height: 1.6;
+        font-size: 13px;
       }
 
       .tag-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 12px;
+        gap: 6px;
+        margin-top: 10px;
       }
 
       .mini-tag {
         display: inline-flex;
         align-items: center;
-        padding: 7px 10px;
+        padding: 6px 9px;
         border-radius: 999px;
         background: rgba(31, 107, 92, 0.08);
         color: var(--accent);
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
       }
 
@@ -536,25 +497,20 @@
           grid-template-columns: 1fr;
         }
 
-        .stats {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
       }
 
       @media (max-width: 600px) {
         .app {
           width: min(100% - 20px, 100%);
-          padding-top: 12px;
+          padding-top: 10px;
         }
 
-        .hero,
         .calendar-shell,
         .agenda-shell {
           border-radius: 22px;
         }
 
-        .stats,
-        .meta-grid {
+        .stats {
           grid-template-columns: 1fr;
         }
 
@@ -573,11 +529,15 @@
         .calendar-day,
         .calendar-day button,
         .calendar-day.empty {
-          min-height: 82px;
+          min-height: 78px;
         }
 
         .card-head {
           flex-direction: column;
+        }
+
+        .time-badge {
+          margin-left: 0;
         }
 
         .calendar-shell[data-mobile-hidden="true"],
@@ -585,17 +545,8 @@
           display: none;
         }
 
-        .hero {
-          padding: 18px;
-        }
-
-        .hero p {
-          font-size: 14px;
-          line-height: 1.75;
-        }
-
         .toolbar {
-          margin-bottom: 12px;
+          margin: 0 0 12px;
         }
 
         .search input {
@@ -603,13 +554,13 @@
         }
 
         .month-chips button {
-          padding: 11px 14px;
-          font-size: 13px;
+          padding: 9px 12px;
+          font-size: 12px;
         }
 
         .calendar-shell,
         .agenda-shell {
-          padding: 14px;
+          padding: 12px;
         }
 
         .nav strong,
@@ -617,13 +568,29 @@
           font-size: 20px;
         }
 
+        .nav {
+          align-items: flex-start;
+        }
+
+        .nav-actions {
+          width: 100%;
+          justify-content: flex-end;
+        }
+
+        .nav button {
+          min-width: 76px;
+          height: 38px;
+          padding: 0 12px;
+          font-size: 13px;
+        }
+
         .card {
-          padding: 16px;
+          padding: 14px;
         }
 
         .card h3 {
-          font-size: 17px;
-          line-height: 1.6;
+          font-size: 16px;
+          line-height: 1.5;
         }
 
         .time-badge {
@@ -631,24 +598,14 @@
         }
 
         .core-brief {
-          padding: 12px 14px;
-          font-size: 13px;
+          padding: 10px 12px;
+          font-size: 12px;
         }
       }
     </style>
   </head>
   <body>
     <main class="app">
-      <section class="hero">
-        <div class="eyebrow">投标日程 H5</div>
-        <h1>开标时间一页看清</h1>
-        <p>
-          按月查看各项目开标安排，点选某一天即可查看项目名称、控制价、资质要求和
-          K 值范围，也保留了评标办法、保证金和人员要求等关键字段。
-        </p>
-        <div class="stats" id="stats"></div>
-      </section>
-
       <div class="toolbar">
         <label class="search">
           <span>检索</span>
@@ -703,7 +660,6 @@
     <script>
       const projects = Array.isArray(window.SCHEDULE_DATA) ? window.SCHEDULE_DATA : [];
       const searchInput = document.getElementById("searchInput");
-      const statsEl = document.getElementById("stats");
       const monthChipsEl = document.getElementById("monthChips");
       const calendarTitleEl = document.getElementById("calendarTitle");
       const calendarSubtitleEl = document.getElementById("calendarSubtitle");
@@ -717,7 +673,9 @@
       const agendaShellEl = document.getElementById("agendaShell");
 
       const datedProjects = projects.filter((item) => item.dayKey !== "待定");
-      const monthKeys = [...new Set(datedProjects.map((item) => item.dayKey.slice(0, 7)))];
+      const monthKeys = [...new Set(datedProjects.map((item) => item.dayKey.slice(0, 7)))].sort((a, b) =>
+        b.localeCompare(a)
+      );
       const hasPending = projects.some((item) => item.dayKey === "待定");
       if (hasPending) monthKeys.push("待定");
 
@@ -729,6 +687,69 @@
         month: initialMonth,
         selectedDay: initialMonth === "待定" ? "待定" : null,
         mobileView: "agenda",
+      };
+      const HOLIDAY_MAP = {
+        "2025-01-01": "元旦",
+        "2025-01-28": "春节",
+        "2025-01-29": "春节",
+        "2025-01-30": "春节",
+        "2025-01-31": "春节",
+        "2025-02-01": "春节",
+        "2025-02-02": "春节",
+        "2025-02-03": "春节",
+        "2025-02-04": "春节",
+        "2025-04-04": "清明",
+        "2025-04-05": "清明",
+        "2025-04-06": "清明",
+        "2025-05-01": "劳动节",
+        "2025-05-02": "劳动节",
+        "2025-05-03": "劳动节",
+        "2025-05-04": "劳动节",
+        "2025-05-05": "劳动节",
+        "2025-05-31": "端午",
+        "2025-06-01": "端午",
+        "2025-06-02": "端午",
+        "2025-10-01": "国庆",
+        "2025-10-02": "国庆",
+        "2025-10-03": "国庆",
+        "2025-10-04": "国庆",
+        "2025-10-05": "国庆",
+        "2025-10-06": "国庆",
+        "2025-10-07": "国庆",
+        "2025-10-08": "中秋",
+        "2026-01-01": "元旦",
+        "2026-01-02": "元旦",
+        "2026-01-03": "元旦",
+        "2026-02-15": "春节",
+        "2026-02-16": "春节",
+        "2026-02-17": "春节",
+        "2026-02-18": "春节",
+        "2026-02-19": "春节",
+        "2026-02-20": "春节",
+        "2026-02-21": "春节",
+        "2026-02-22": "春节",
+        "2026-02-23": "春节",
+        "2026-04-04": "清明",
+        "2026-04-05": "清明",
+        "2026-04-06": "清明",
+        "2026-05-01": "劳动节",
+        "2026-05-02": "劳动节",
+        "2026-05-03": "劳动节",
+        "2026-05-04": "劳动节",
+        "2026-05-05": "劳动节",
+        "2026-06-19": "端午",
+        "2026-06-20": "端午",
+        "2026-06-21": "端午",
+        "2026-09-25": "中秋",
+        "2026-09-26": "中秋",
+        "2026-09-27": "中秋",
+        "2026-10-01": "国庆",
+        "2026-10-02": "国庆",
+        "2026-10-03": "国庆",
+        "2026-10-04": "国庆",
+        "2026-10-05": "国庆",
+        "2026-10-06": "国庆",
+        "2026-10-07": "国庆",
       };
 
       function isMobile() {
@@ -746,6 +767,23 @@
           return `${Number(project.amount).toLocaleString("zh-CN")} 元 / ${project.amountWan} 万`;
         }
         return `${formatMoney(project.amount)} 元`;
+      }
+
+      function formatMonthLabel(monthKey, count) {
+        if (monthKey === "待定") {
+          return `待定项目｜${count}`;
+        }
+        const [year, month] = monthKey.split("-");
+        const shortYear = year.slice(2);
+        return `${shortYear}年${Number(month)}月｜项目${count}`;
+      }
+
+      function formatMonthTitle(monthKey) {
+        if (monthKey === "待定") {
+          return "待定项目";
+        }
+        const [year, month] = monthKey.split("-");
+        return `${year}年${Number(month)}月`;
       }
 
       function getMonthProjects(monthKey) {
@@ -767,41 +805,27 @@
         );
       }
 
+      function getSearchMatchedDatedProjects() {
+        const keyword = state.search.trim().toLowerCase();
+        if (!keyword) return datedProjects;
+        return datedProjects.filter((item) =>
+          [item.name, item.region, item.qualification, item.kValue, item.staff]
+            .join(" ")
+            .toLowerCase()
+            .includes(keyword)
+        );
+      }
+
       function getFirstDayWithProjects(items) {
         const first = items.find((item) => item.dayKey !== "待定");
         return first ? first.dayKey : null;
-      }
-
-      function renderStats() {
-        const projectCount = projects.length;
-        const regions = new Set(projects.map((item) => item.region).filter(Boolean)).size;
-        const pendingCount = projects.filter((item) => item.dayKey === "待定").length;
-        const amountTotal = projects.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-
-        const stats = [
-          { value: projectCount, label: "项目总数" },
-          { value: monthKeys.length - (hasPending ? 1 : 0), label: "覆盖月份" },
-          { value: regions, label: "覆盖地区" },
-          { value: `${(amountTotal / 100000000).toFixed(2)} 亿`, label: `控制价汇总，待定 ${pendingCount} 项` },
-        ];
-
-        statsEl.innerHTML = stats
-          .map(
-            (item) => `
-              <div class="stat">
-                <strong>${item.value}</strong>
-                <span>${item.label}</span>
-              </div>
-            `
-          )
-          .join("");
       }
 
       function renderMonthChips() {
         monthChipsEl.innerHTML = monthKeys
           .map((monthKey) => {
             const count = getMonthProjects(monthKey).length;
-            const label = monthKey === "待定" ? `待定项目 ${count}` : `${monthKey} · ${count}`;
+            const label = formatMonthLabel(monthKey, count);
             return `<button class="${state.month === monthKey ? "active" : ""}" data-month="${monthKey}">${label}</button>`;
           })
           .join("");
@@ -827,11 +851,11 @@
         const prev = monthKeys[index - 1];
         const next = monthKeys[index + 1] === "待定" ? null : monthKeys[index + 1];
 
-        calendarTitleEl.textContent = state.month;
+        calendarTitleEl.textContent = formatMonthTitle(state.month);
         calendarSubtitleEl.textContent = `共 ${getFilteredProjects().length} 个匹配项目`;
         calendarActionsEl.innerHTML = `
-          <button ${prev ? `data-nav="${prev}"` : "disabled"} aria-label="上个月">‹</button>
-          <button ${next ? `data-nav="${next}"` : "disabled"} aria-label="下个月">›</button>
+          <button ${next ? `data-nav="${next}"` : "disabled"} aria-label="上一月">上一月</button>
+          <button ${prev ? `data-nav="${prev}"` : "disabled"} aria-label="下一月">下一月</button>
         `;
 
         [...calendarActionsEl.querySelectorAll("button[data-nav]")].forEach((button) => {
@@ -852,8 +876,9 @@
         }
 
         const filteredProjects = getFilteredProjects();
+        const searchMatchedProjects = getSearchMatchedDatedProjects();
         const projectMap = new Map();
-        filteredProjects.forEach((item) => {
+        searchMatchedProjects.forEach((item) => {
           const list = projectMap.get(item.dayKey) || [];
           list.push(item);
           projectMap.set(item.dayKey, list);
@@ -863,28 +888,41 @@
         const firstDay = new Date(year, month - 1, 1);
         const daysInMonth = new Date(year, month, 0).getDate();
         const offset = (firstDay.getDay() + 6) % 7;
+        const leadingStart = new Date(year, month - 1, 1 - offset);
+        const totalCells = Math.ceil((offset + daysInMonth) / 7) * 7;
 
         const cells = [];
-        for (let i = 0; i < offset; i += 1) {
-          cells.push('<div class="calendar-day empty"></div>');
-        }
-
-        for (let day = 1; day <= daysInMonth; day += 1) {
-          const dayKey = `${state.month}-${String(day).padStart(2, "0")}`;
+        for (let i = 0; i < totalCells; i += 1) {
+          const currentDate = new Date(leadingStart);
+          currentDate.setDate(leadingStart.getDate() + i);
+          const currentMonthKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, "0")}`;
+          const dayKey = `${currentMonthKey}-${String(currentDate.getDate()).padStart(2, "0")}`;
           const list = projectMap.get(dayKey) || [];
+          const isOutside = currentMonthKey !== state.month;
+          const weekday = currentDate.getDay();
+          const isWeekend = weekday === 0 || weekday === 6;
+          const holidayLabel = HOLIDAY_MAP[dayKey] || "";
           const selected = state.selectedDay ? state.selectedDay === dayKey : false;
           const summary = list[0] ? `${list[0].timeLabel} ${list[0].region}` : "暂无项目";
           cells.push(`
             <div class="calendar-day">
               <button
-                class="${list.length ? "has-items" : ""} ${selected ? "selected" : ""}"
+                class="${list.length ? "has-items" : ""} ${selected ? "selected" : ""} ${isOutside ? "is-outside" : ""} ${isWeekend ? "is-weekend" : ""} ${holidayLabel ? "is-holiday" : ""}"
                 data-day="${dayKey}"
               >
                 <div class="day-top">
-                  <strong>${day}</strong>
-                  ${list.length ? `<span class="count-pill">${list.length}</span>` : ""}
+                  <strong>${currentDate.getDate()}</strong>
+                  <div class="day-badges">
+                    ${holidayLabel ? `<span class="day-flag holiday">${holidayLabel}</span>` : ""}
+                    ${list.length ? `<span class="count-pill">${list.length}</span>` : ""}
+                  </div>
                 </div>
                 <div class="day-snippet">${summary}</div>
+                ${
+                  list.length
+                    ? `<div class="day-markers">${renderDayMarkers(list)}</div>`
+                    : ""
+                }
               </button>
             </div>
           `);
@@ -902,7 +940,7 @@
 
       function createCard(project) {
         const coreBrief = [
-          project.timeLabel && project.timeLabel !== "待定" ? `开标 ${project.timeLabel}` : "时间待定",
+          project.qualification || "资质未填写",
           project.amountWan ? `控制价 ${project.amountWan} 万` : "控制价未填写",
           project.kValue ? `K值 ${project.kValue}` : "K值未填写",
         ].join(" · ");
@@ -910,8 +948,9 @@
         return `
           <article class="card">
             <div class="card-head">
-              <div>
+              <div class="card-main">
                 <span class="region-tag">${project.region || "未分地区"}</span>
+                <span class="sheet-tag ${getSheetClass(project)}">${project.sourceTag || project.sheetTag || project.sheetName || "项目"}</span>
                 <h3>${project.name}</h3>
               </div>
               <span class="time-badge">${project.dateLabel}</span>
@@ -922,57 +961,22 @@
               <span class="mini-tag">${project.staff || "人员要求未填写"}</span>
               <span class="mini-tag">${project.signup || "报名状态未填写"}</span>
             </div>
-            <div class="meta-grid">
-              <div class="meta highlight">
-                <label>控制价</label>
-                <strong>${formatAmount(project)}</strong>
-              </div>
-              <div class="meta highlight">
-                <label>K 值范围</label>
-                <strong>${project.kValue || "未填写"}</strong>
-              </div>
-              <div class="meta">
-                <label>资质要求</label>
-                <strong>${project.qualification || "未填写"}</strong>
-              </div>
-              <div class="meta">
-                <label>人员要求</label>
-                <strong>${project.staff || "未填写"}</strong>
-              </div>
-            </div>
-            <details>
-              <summary>展开更多项目信息</summary>
-              <div class="detail-body">
-                <div class="detail-item">
-                  <label>评标办法</label>
-                  <div>${project.evaluation || "未填写"}</div>
-                </div>
-                <div class="detail-item">
-                  <label>投标保证金</label>
-                  <div>${project.deposit && project.deposit !== "/" ? `${formatMoney(project.deposit)} 元` : "未填写"}</div>
-                </div>
-                <div class="detail-item">
-                  <label>清单数 / 危大 / 有限空间</label>
-                  <div>清单数：${project.billCount || "未填写"}，危大：${project.danger || "未填写"}，有限空间：${project.confinedSpace || "未填写"}</div>
-                </div>
-                <div class="detail-item">
-                  <label>报名状态</label>
-                  <div>${project.signup || "未填写"}</div>
-                </div>
-              </div>
-            </details>
           </article>
         `;
       }
 
       function renderAgenda() {
         const filteredProjects = getFilteredProjects();
+        const searchMatchedProjects = getSearchMatchedDatedProjects();
         let list = filteredProjects;
         let title = state.month === "待定" ? "待定项目" : `${state.month} 全部项目`;
         let subtitle = `共 ${filteredProjects.length} 个匹配项目`;
 
         if (state.month !== "待定" && state.selectedDay) {
-          list = filteredProjects.filter((item) => item.dayKey === state.selectedDay);
+          const source = state.selectedDay.startsWith(state.month)
+            ? filteredProjects
+            : searchMatchedProjects;
+          list = source.filter((item) => item.dayKey === state.selectedDay);
           title = state.selectedDay;
           subtitle = list.length
             ? `当天共有 ${list.length} 个项目开标`
@@ -984,6 +988,30 @@
         agendaListEl.innerHTML = list.length
           ? list.map(createCard).join("")
           : '<div class="empty-state">没有找到匹配的项目，试试切换月份或修改搜索关键词。</div>';
+      }
+
+      function getSheetClass(project) {
+        if (project.sourceTag === "两家") return "sheet-both";
+        if (project.sourceTag === "富竹") return "sheet-fuzhu";
+        if (project.sourceTag === "辉阳") return "sheet-huiyang";
+        return "sheet-water";
+      }
+
+      function renderDayMarkers(list) {
+        const tags = [];
+        if (list.some((item) => item.sourceTag === "两家")) {
+          tags.push('<span class="day-dot sheet-both" title="两家"></span>');
+        }
+        if (list.some((item) => item.sourceTag === "辉阳")) {
+          tags.push('<span class="day-dot sheet-huiyang" title="辉阳"></span>');
+        }
+        if (list.some((item) => item.sourceTag === "富竹")) {
+          tags.push('<span class="day-dot sheet-fuzhu" title="富竹"></span>');
+        }
+        if (list.some((item) => item.sourceTag === "水利")) {
+          tags.push('<span class="day-dot sheet-water" title="水利"></span>');
+        }
+        return tags.join("");
       }
 
       function renderViewSwitch() {
@@ -1025,7 +1053,6 @@
 
       window.addEventListener("resize", renderViewSwitch);
 
-      renderStats();
       if (state.month !== "待定") {
         state.selectedDay = getFirstDayWithProjects(getFilteredProjects());
       }
