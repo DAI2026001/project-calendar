@@ -221,16 +221,6 @@
         grid-template-columns: repeat(7, minmax(0, 1fr));
       }
 
-      .calendar-board {
-        overflow-x: auto;
-        padding-bottom: 2px;
-      }
-
-      .calendar-board .weekdays,
-      .calendar-board .calendar-grid {
-        min-width: 700px;
-      }
-
       .weekdays {
         margin-bottom: 6px;
       }
@@ -355,10 +345,9 @@
       }
 
       .day-dot {
-        width: 10px;
-        height: 10px;
+        width: 8px;
+        height: 8px;
         border-radius: 50%;
-        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.92);
       }
 
       .agenda-head {
@@ -525,18 +514,8 @@
           grid-template-columns: 1fr;
         }
 
-        .calendar-board {
-          overflow-x: auto;
-          -webkit-overflow-scrolling: touch;
-        }
-
-        .calendar-board .weekdays,
-        .calendar-board .calendar-grid {
-          min-width: 640px;
-        }
-
         .calendar-grid {
-          gap: 8px;
+          gap: 6px;
         }
 
         .view-switch {
@@ -550,7 +529,7 @@
         .calendar-day,
         .calendar-day button,
         .calendar-day.empty {
-          min-height: 88px;
+          min-height: 78px;
         }
 
         .card-head {
@@ -622,15 +601,6 @@
           padding: 10px 12px;
           font-size: 12px;
         }
-
-        .day-snippet {
-          font-size: 11px;
-        }
-
-        .day-dot {
-          width: 11px;
-          height: 11px;
-        }
       }
     </style>
   </head>
@@ -662,18 +632,16 @@
             </div>
             <div class="nav-actions" id="calendarActions"></div>
           </div>
-          <div class="calendar-board">
-            <div class="weekdays">
-              <span>周一</span>
-              <span>周二</span>
-              <span>周三</span>
-              <span>周四</span>
-              <span>周五</span>
-              <span>周六</span>
-              <span>周日</span>
-            </div>
-            <div class="calendar-grid" id="calendarGrid"></div>
+          <div class="weekdays">
+            <span>周一</span>
+            <span>周二</span>
+            <span>周三</span>
+            <span>周四</span>
+            <span>周五</span>
+            <span>周六</span>
+            <span>周日</span>
           </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
         </div>
 
         <aside class="agenda-shell" id="agendaShell">
