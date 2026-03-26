@@ -218,6 +218,30 @@
         gap: 18px;
       }
 
+      .view-switch {
+        display: none;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .view-switch button {
+        flex: 1;
+        appearance: none;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--muted);
+        padding: 12px 14px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .view-switch button.active {
+        background: var(--ink);
+        color: #fff;
+        box-shadow: 0 10px 20px rgba(29, 36, 48, 0.16);
+      }
+
       .calendar-shell,
       .agenda-shell {
         padding: 18px;
@@ -367,7 +391,7 @@
         background: var(--panel-strong);
         border: 1px solid rgba(25, 38, 56, 0.08);
         border-radius: 20px;
-        padding: 16px;
+        padding: 18px;
       }
 
       .card-head {
@@ -401,8 +425,20 @@
 
       .card h3 {
         margin: 0;
-        font-size: 18px;
-        line-height: 1.45;
+        font-size: 19px;
+        line-height: 1.55;
+        letter-spacing: 0.01em;
+      }
+
+      .core-brief {
+        margin-top: 12px;
+        padding: 14px 16px;
+        border-radius: 18px;
+        background: linear-gradient(180deg, rgba(250, 242, 236, 0.92), rgba(255, 252, 248, 0.96));
+        border: 1px solid rgba(182, 69, 44, 0.1);
+        color: #694a38;
+        line-height: 1.8;
+        font-size: 14px;
       }
 
       .meta-grid {
@@ -429,6 +465,11 @@
         font-size: 15px;
         line-height: 1.5;
         word-break: break-word;
+      }
+
+      .meta.highlight {
+        background: rgba(182, 69, 44, 0.08);
+        border: 1px solid rgba(182, 69, 44, 0.1);
       }
 
       details {
@@ -464,6 +505,24 @@
       .detail-item div {
         line-height: 1.65;
         word-break: break-word;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .mini-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(31, 107, 92, 0.08);
+        color: var(--accent);
+        font-size: 12px;
+        font-weight: 700;
       }
 
       .empty-state {
@@ -503,6 +562,14 @@
           gap: 6px;
         }
 
+        .view-switch {
+          display: flex;
+        }
+
+        .layout {
+          gap: 12px;
+        }
+
         .calendar-day,
         .calendar-day button,
         .calendar-day.empty {
@@ -511,6 +578,61 @@
 
         .card-head {
           flex-direction: column;
+        }
+
+        .calendar-shell[data-mobile-hidden="true"],
+        .agenda-shell[data-mobile-hidden="true"] {
+          display: none;
+        }
+
+        .hero {
+          padding: 18px;
+        }
+
+        .hero p {
+          font-size: 14px;
+          line-height: 1.75;
+        }
+
+        .toolbar {
+          margin-bottom: 12px;
+        }
+
+        .search input {
+          font-size: 16px;
+        }
+
+        .month-chips button {
+          padding: 11px 14px;
+          font-size: 13px;
+        }
+
+        .calendar-shell,
+        .agenda-shell {
+          padding: 14px;
+        }
+
+        .nav strong,
+        .agenda-head h2 {
+          font-size: 20px;
+        }
+
+        .card {
+          padding: 16px;
+        }
+
+        .card h3 {
+          font-size: 17px;
+          line-height: 1.6;
+        }
+
+        .time-badge {
+          font-size: 13px;
+        }
+
+        .core-brief {
+          padding: 12px 14px;
+          font-size: 13px;
         }
       }
     </style>
@@ -539,8 +661,13 @@
         <div class="month-chips" id="monthChips"></div>
       </div>
 
+      <div class="view-switch" id="viewSwitch">
+        <button data-view="agenda">日程列表</button>
+        <button data-view="calendar">月历视图</button>
+      </div>
+
       <section class="layout">
-        <div class="calendar-shell">
+        <div class="calendar-shell" id="calendarShell">
           <div class="nav">
             <div>
               <strong id="calendarTitle"></strong>
@@ -560,7 +687,7 @@
           <div class="calendar-grid" id="calendarGrid"></div>
         </div>
 
-        <aside class="agenda-shell">
+        <aside class="agenda-shell" id="agendaShell">
           <div class="agenda-head">
             <div>
               <h2 id="agendaTitle"></h2>
@@ -585,6 +712,9 @@
       const agendaTitleEl = document.getElementById("agendaTitle");
       const agendaSubtitleEl = document.getElementById("agendaSubtitle");
       const agendaListEl = document.getElementById("agendaList");
+      const viewSwitchEl = document.getElementById("viewSwitch");
+      const calendarShellEl = document.getElementById("calendarShell");
+      const agendaShellEl = document.getElementById("agendaShell");
 
       const datedProjects = projects.filter((item) => item.dayKey !== "待定");
       const monthKeys = [...new Set(datedProjects.map((item) => item.dayKey.slice(0, 7)))];
@@ -598,7 +728,12 @@
         search: "",
         month: initialMonth,
         selectedDay: initialMonth === "待定" ? "待定" : null,
+        mobileView: "agenda",
       };
+
+      function isMobile() {
+        return window.matchMedia("(max-width: 600px)").matches;
+      }
 
       function formatMoney(value) {
         if (!value || value === "/") return "未填写";
@@ -630,6 +765,11 @@
             .toLowerCase()
             .includes(keyword)
         );
+      }
+
+      function getFirstDayWithProjects(items) {
+        const first = items.find((item) => item.dayKey !== "待定");
+        return first ? first.dayKey : null;
       }
 
       function renderStats() {
@@ -669,7 +809,7 @@
         [...monthChipsEl.querySelectorAll("button")].forEach((button) => {
           button.addEventListener("click", () => {
             state.month = button.dataset.month;
-            state.selectedDay = state.month === "待定" ? "待定" : null;
+            state.selectedDay = state.month === "待定" ? "待定" : getFirstDayWithProjects(getFilteredProjects());
             render();
           });
         });
@@ -697,7 +837,7 @@
         [...calendarActionsEl.querySelectorAll("button[data-nav]")].forEach((button) => {
           button.addEventListener("click", () => {
             state.month = button.dataset.nav;
-            state.selectedDay = null;
+            state.selectedDay = getFirstDayWithProjects(getFilteredProjects());
             render();
           });
         });
@@ -732,9 +872,7 @@
         for (let day = 1; day <= daysInMonth; day += 1) {
           const dayKey = `${state.month}-${String(day).padStart(2, "0")}`;
           const list = projectMap.get(dayKey) || [];
-          const selected = state.selectedDay
-            ? state.selectedDay === dayKey
-            : list.length > 0 && day === 1 && false;
+          const selected = state.selectedDay ? state.selectedDay === dayKey : false;
           const summary = list[0] ? `${list[0].timeLabel} ${list[0].region}` : "暂无项目";
           cells.push(`
             <div class="calendar-day">
@@ -763,6 +901,12 @@
       }
 
       function createCard(project) {
+        const coreBrief = [
+          project.timeLabel && project.timeLabel !== "待定" ? `开标 ${project.timeLabel}` : "时间待定",
+          project.amountWan ? `控制价 ${project.amountWan} 万` : "控制价未填写",
+          project.kValue ? `K值 ${project.kValue}` : "K值未填写",
+        ].join(" · ");
+
         return `
           <article class="card">
             <div class="card-head">
@@ -772,12 +916,18 @@
               </div>
               <span class="time-badge">${project.dateLabel}</span>
             </div>
+            <div class="core-brief">${coreBrief}</div>
+            <div class="tag-row">
+              <span class="mini-tag">${project.evaluation || "评标办法未填写"}</span>
+              <span class="mini-tag">${project.staff || "人员要求未填写"}</span>
+              <span class="mini-tag">${project.signup || "报名状态未填写"}</span>
+            </div>
             <div class="meta-grid">
-              <div class="meta">
+              <div class="meta highlight">
                 <label>控制价</label>
                 <strong>${formatAmount(project)}</strong>
               </div>
-              <div class="meta">
+              <div class="meta highlight">
                 <label>K 值范围</label>
                 <strong>${project.kValue || "未填写"}</strong>
               </div>
@@ -836,18 +986,49 @@
           : '<div class="empty-state">没有找到匹配的项目，试试切换月份或修改搜索关键词。</div>';
       }
 
+      function renderViewSwitch() {
+        if (!isMobile()) {
+          calendarShellEl.removeAttribute("data-mobile-hidden");
+          agendaShellEl.removeAttribute("data-mobile-hidden");
+          return;
+        }
+
+        [...viewSwitchEl.querySelectorAll("button")].forEach((button) => {
+          button.classList.toggle("active", button.dataset.view === state.mobileView);
+        });
+
+        calendarShellEl.setAttribute("data-mobile-hidden", state.mobileView !== "calendar");
+        agendaShellEl.setAttribute("data-mobile-hidden", state.mobileView !== "agenda");
+      }
+
       function render() {
         renderMonthChips();
         renderCalendar();
         renderAgenda();
+        renderViewSwitch();
       }
 
       searchInput.addEventListener("input", (event) => {
         state.search = event.target.value;
+        if (state.month !== "待定") {
+          state.selectedDay = getFirstDayWithProjects(getFilteredProjects());
+        }
         render();
       });
 
+      [...viewSwitchEl.querySelectorAll("button")].forEach((button) => {
+        button.addEventListener("click", () => {
+          state.mobileView = button.dataset.view;
+          renderViewSwitch();
+        });
+      });
+
+      window.addEventListener("resize", renderViewSwitch);
+
       renderStats();
+      if (state.month !== "待定") {
+        state.selectedDay = getFirstDayWithProjects(getFilteredProjects());
+      }
       render();
     </script>
   </body>
